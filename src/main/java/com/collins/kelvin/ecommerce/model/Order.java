@@ -6,6 +6,9 @@
 package com.collins.kelvin.ecommerce.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -22,29 +26,34 @@ import lombok.Data;
  */
 @Entity
 @Data
-@Table(name="orders")
-public class Order implements Serializable{
+@Table(name = "orders")
+public class Order implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long order_id;
-    
-    @Column(name="order_name")
+
+    @Column(name = "order_name")
     private String order_name;
-    
-    @Column(name="total_price")
+
+    @Column(name = "total_price")
     private long total_price;
-    
-    @Column(name="date")
+
+    @Column(name = "date")
     private String date;
-     @Column(name="product_list")
+    @Column(name = "product_list")
     private String product_list;
-    
+
     @Column(name = "id")
     private Long id;
+
+//    @OneToMany(targetEntity=Product.class, cascade=CascadeType.ALL )
+//    @JoinColumn(name="cp_fk",referencedColumnName="order_id")
+//    private List<Product> product;
     
-//    @ManyToOne
-//    @JoinColumn(name="id", nullable=false)
-//    private Customer customer;
+    @OneToMany(mappedBy="order")
+    private List<Product> product;
+
     
     public long getOrder_id() {
         return order_id;
@@ -69,6 +78,7 @@ public class Order implements Serializable{
     public void setPrice(long price) {
         this.total_price = price;
     }
-    
-    
+
+
+
 }

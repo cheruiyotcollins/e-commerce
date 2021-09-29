@@ -31,82 +31,131 @@ public class OrderServices {
 
     @Autowired
     OrderRepository orderRepository;
-    
+
     @Autowired
     ProductRepository productRepository;
-            
+
     @Autowired
     CustomerRepository customerRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
-    
-    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate str;
+    long sum;
+    String p_list;
+
     @Async
     public CompletableFuture<List<Order>> getAllOrders() {
         LOGGER.info("Request to get a list of all existing orders");
-        
+
         final List<Order> order = orderRepository.findAll();
         return CompletableFuture.completedFuture(order);
-        
+
     }
-    
+
+    public List<Order> getAllOrders1() {
+        LOGGER.info("Request to get a list of all existing orders");
+
+        final List<Order> order = orderRepository.findAll();
+        return order;
+
+    }
+
     public void save(Order order) throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate str = LocalDate.now();
+        str = LocalDate.now();
         str.format(formatter);
         order.setDate(str.toString());
         if (customerRepository.existsById(order.getId())) {
-            String s= order.getProduct_list();
-            String[] sArr= s.split(",");
-            long sum=0;
-            for(int i=0;i<sArr.length;i++){
-             Product product= productRepository.findById(new Long(Integer.valueOf(sArr[i]))).get();
-            sum+=product.getPrice();
+            sum = 0;
+            p_list = "";
+
+            for (int i = 0; i < order.getProduct().size(); i++) {
+                LOGGER.info("************Calculating totalprice for order given");
+                long lo = order.getProduct().get(i).getProduct_id();
+                if (productRepository.existsById(lo)) {
+                    Product product = productRepository.findById(lo).get();
+                    int quantity = order.getProduct().get(i).getQuantity();
+                    if (product.getStock() >= quantity) {
+
+                        sum += product.getPrice() * quantity;
+                        p_list += lo + ",";
+                        product.setStock(product.getStock() - quantity);
+                    } else {
+                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units for " + product.getName() + " " + product.getDescription()
+                                + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
+                    }
+                } else {
+                    throw new Exception("One of the Products is missing in the database");
+
+                }
+
             }
+            order.setProduct_list(p_list);
             order.setTotal_price(sum);
-            orderRepository.save(order);            
+            LOGGER.info("************Saving Order******");
+            orderRepository.save(order);
         } else {
             throw new Exception("failed, customer id does not exist");
-            
+
         }
-//        Customer customer = customerRepository.findById(id).get();
-//        customer.addOrder(order);
 
     }
-    
+
     public void update(Long id, Order order) throws Exception {
-        // TODO Auto-generated method stub
+        LOGGER.info("************Updating Order*********");
         Order order1 = orderRepository.findById(id).get();
-        
+
         order1 = order;
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate str = LocalDate.now();
+
+        str = LocalDate.now();
         str.format(formatter);
         order1.setDate(str.toString());
-         if (customerRepository.existsById(order.getId())) {
+        if (customerRepository.existsById(order.getId())) {
             order1.setOrder_id(id);
-            String s= order.getProduct_list();
-            String[] sArr= s.split(",");
-            long sum=0;
-            for(int i=0;i<sArr.length;i++){
-             Product product= productRepository.findById(new Long(Integer.valueOf(sArr[i]))).get();
-            sum+=product.getPrice();
+
+            sum = 0;
+            p_list = "";
+
+            for (int i = 0; i < order.getProduct().size(); i++) {
+                LOGGER.info("************Calculating totalprice for order given");
+                long lo = order.getProduct().get(i).getProduct_id();
+                if (productRepository.existsById(lo)) {
+                    Product product = productRepository.findById(lo).get();
+                    int quantity = order.getProduct().get(i).getQuantity();
+                    if (product.getStock() >= quantity) {
+                        sum += product.getPrice() * quantity;
+                        p_list += lo + ",";
+                        product.setStock(product.getStock() - quantity);
+                    } else {
+                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units for " + product.getName() + " " + product.getDescription()
+                                + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
+                    }
+                } else {
+                    throw new Exception("One of the Products is missing in the database");
+
+                }
+
             }
+            //Calculating using string of product ids
+//            for (int i = 0; i < sArr.length; i++) {
+//                Product product = productRepository.findById(new Long(Integer.valueOf(sArr[i]))).get();
+//                sum += product.getPrice();
+//            }
             order1.setTotal_price(sum);
-            orderRepository.save(order1);            
+            orderRepository.save(order1);
         } else {
             throw new Exception("failed, customer id does not exist");
-            
+
         }
+        LOGGER.info("************Saving Order*********");
         orderRepository.save(order1);
     }
-    
+
     public Order getOrderById(long id) {
         return orderRepository.findById(id).get();
     }
-    
+
     public void deleteOrder(long id) {
         orderRepository.deleteById(id);
     }
-    
+
 }

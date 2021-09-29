@@ -51,6 +51,12 @@ public class OrderController {
                 .exceptionally(handleGetLoanFailure);
 
     }
+     @GetMapping("/list1")
+    public List<Order> list1() {
+
+        return orderService.getAllOrders1();
+
+    }
     private static Function<Throwable, ResponseEntity<? extends List<Order>>> handleGetLoanFailure = throwable -> {
         LOGGER.error("Failed to read records: {}", throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -58,6 +64,13 @@ public class OrderController {
 
     @PostMapping("/add_order/")
     public Order addOrder( @RequestBody Order order) throws Exception {
+
+        orderService.save(order);
+        return order;
+
+    }
+     @PostMapping("/add_order1/")
+    public Order addOrder1( @RequestBody Order order) throws Exception {
 
         orderService.save(order);
         return order;

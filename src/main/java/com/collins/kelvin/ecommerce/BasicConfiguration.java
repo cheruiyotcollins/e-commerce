@@ -39,20 +39,20 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
           .withUser("admin").password(passwordEncoder().encode("admin")).roles("USER", "ADMIN")
                 .and()
                 .withUser("agent").password(passwordEncoder().encode("agent")).roles("AGENT");
-    }
-   /* @Override
+    }/*
+   @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/product/list").permitAll()
+                .antMatchers("/product/add_product").permitAll()
                 .antMatchers("/product/**").hasRole("ADMIN")
                 .antMatchers("/order/**").hasRole("ADMIN")
                 .antMatchers("/customer/**").hasRole("ADMIN")
                 .and()
                 .httpBasic();
 
-    } */
+    }*/
     @Bean
-    public PasswordEncoder passwordEncoder(){
-    return new BCryptPasswordEncoder();}
+    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
 }
