@@ -5,17 +5,24 @@
  */
 package com.collins.kelvin.ecommerce.repository;
 
+import com.collins.kelvin.ecommerce.dto.OrderResponse;
 import com.collins.kelvin.ecommerce.model.Order;
-import java.awt.print.Pageable;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-/**
- *
- * @author KEN19283
- */
-public interface OrderRepository extends JpaRepository<Order,Long>{
+public interface OrderRepository extends JpaRepository<Order, Long> {
 //      Page<Order> findByCustomerId(Long customerId, Pageable pageable);
 //    Optional<Order> findByIdAndCustomerId(Long id, Long customerId);
+    // @Query("SELECT c.name, p.manufacturer FROM Customer c JOIN c.Products p")
+
+
+    @Query("SELECT new com.collins.kelvin.ecommerce.dto.OrderResponse(order_name, order_id) FROM Order")
+    public List<OrderResponse> getJoinColumns();
+
+    @Query("SELECT new com.collins.kelvin.ecommerce.dto.OrderResponse(order_name, order_id) FROM Order ")
+    public List<OrderResponse> getFew();
+
+    @Query("SELECT o  FROM Order o where o.id=?1")
+    public List<Order> getByCustomerId(Long id);
 }

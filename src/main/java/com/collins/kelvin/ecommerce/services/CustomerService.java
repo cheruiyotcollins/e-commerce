@@ -6,6 +6,7 @@
 package com.collins.kelvin.ecommerce.services;
 
 import com.collins.kelvin.ecommerce.BasicConfiguration;
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.model.Customer;
 import com.collins.kelvin.ecommerce.repository.CustomerRepository;
 import java.time.LocalDate;
@@ -25,25 +26,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService {
 
+
+
     @Autowired
     CustomerRepository customerRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
     int strength = 10; // work factor of bcrypt
     BasicConfiguration basicConfiguration =new BasicConfiguration();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final Logger LOGGER= LoggerFactory.getLogger(CustomerService.class);
 
-   
+   //Custom customer repository
+    public List<Customer> searchByName(OneString oneString){
+        String s= oneString.getItem();
+        LOGGER.info("****************** Entering search engine*******************8888");
+        return  customerRepository.searchByName(s);
+
+    }
     
     @Async
     public CompletableFuture<List<Customer>> getAllCustomers() {
         LOGGER.info("Request to get a list of all existing customers");
         final List<Customer> customer = customerRepository.findAll();
-        Customer customer1= new Customer();
         return CompletableFuture.completedFuture(customer);
 
     }
 
     public void save(Customer customer) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         LocalDate str = LocalDate.now();
         str.format(formatter);
         customer.setDate(str.toString());
@@ -56,7 +65,6 @@ public class CustomerService {
         // TODO Auto-generated method stub
         Customer customer1 = customerRepository.findById(id).get();
         customer1 = customer;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate str = LocalDate.now();
         str.format(formatter);
         customer1.setDate(str.toString());

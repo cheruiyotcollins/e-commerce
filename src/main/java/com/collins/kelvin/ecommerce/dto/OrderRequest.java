@@ -5,8 +5,10 @@
  */
 package com.collins.kelvin.ecommerce.dto;
 
-import com.collins.kelvin.ecommerce.model.Customer;
+import com.collins.kelvin.ecommerce.model.Order;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -15,7 +17,9 @@ import lombok.ToString;
  */
 @Data
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderRequest {
-    Customer customer;
+   private Order order;
     
 }

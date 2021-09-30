@@ -34,7 +34,10 @@ public class Product implements Serializable{
     
     @Column(name="manufacturer")
     private String manufacturer;
-    
+    @Column(name="category")
+    private String category;
+
+
     @Column(name="description")
     private String description;
     

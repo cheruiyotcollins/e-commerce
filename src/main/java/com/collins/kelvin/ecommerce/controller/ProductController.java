@@ -5,6 +5,7 @@
  */
 package com.collins.kelvin.ecommerce.controller;
 
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.model.Customer;
 import com.collins.kelvin.ecommerce.model.Product;
 import com.collins.kelvin.ecommerce.services.ProductService;
@@ -51,6 +52,10 @@ public class ProductController {
                 .exceptionally(handleGetLoanFailure);
 
         
+    }
+    @GetMapping("/category")
+    public List<Product>  getByCategory(@RequestBody OneString oneString){
+            return productService.getByCategory(oneString);
     }
     private static Function<Throwable, ResponseEntity<? extends List<Customer>>> handleGetLoanFailure = throwable -> {
         LOGGER.error("Failed to read records: {}", throwable);

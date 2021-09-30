@@ -5,11 +5,12 @@
  */
 package com.collins.kelvin.ecommerce.controller;
 
-import com.collins.kelvin.ecommerce.model.Customer;
+import com.collins.kelvin.ecommerce.dto.OneLong;
+import com.collins.kelvin.ecommerce.dto.OrderRequest;
+import com.collins.kelvin.ecommerce.dto.OrderResponse;
 import com.collins.kelvin.ecommerce.model.Order;
-import com.collins.kelvin.ecommerce.model.Product;
+import com.collins.kelvin.ecommerce.repository.OrderRepository;
 import com.collins.kelvin.ecommerce.services.OrderServices;
-import com.collins.kelvin.ecommerce.services.ProductService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -29,17 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author KEN19283
- */
 @RestController
 @RequestMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderController {
 
     @Autowired
     OrderServices orderService;
-
+     @Autowired
+     OrderRepository orderRepository;
     private final MediaType mediaType = MediaType.APPLICATION_JSON;
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 
@@ -48,16 +46,36 @@ public class OrderController {
     CompletableFuture<ResponseEntity> list() {
 
         return orderService.getAllOrders().<ResponseEntity>thenApply(ResponseEntity::ok)
-                .exceptionally(handleGetLoanFailure);
+                .exceptionally(handleGetOrderFailure);
 
     }
      @GetMapping("/list1")
-    public List<Order> list1() {
+    public List<Order> listAsync() {
 
-        return orderService.getAllOrders1();
+        return orderService.getAllOrdersSync();
 
     }
-    private static Function<Throwable, ResponseEntity<? extends List<Order>>> handleGetLoanFailure = throwable -> {
+    
+    @GetMapping("/joinColumn")
+    public List<OrderResponse> joinColumn() {
+
+        return orderService.getJoinList();
+
+    }
+
+    @GetMapping("/joinFew")
+    public List<OrderResponse> joinFew() {
+
+        return orderService.getJoinFew();
+
+    }
+    @GetMapping("/get_order_by_cust_id")
+    public List<Order> getByCustomerId(@RequestBody OneLong oneLong) {
+
+        return orderService.getByCustomerId(oneLong);
+
+    }
+    private static Function<Throwable, ResponseEntity<? extends List<Order>>> handleGetOrderFailure = throwable -> {
         LOGGER.error("Failed to read records: {}", throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     };
@@ -70,10 +88,9 @@ public class OrderController {
 
     }
      @PostMapping("/add_order1/")
-    public Order addOrder1( @RequestBody Order order) throws Exception {
-
-        orderService.save(order);
-        return order;
+    public Order addOrder1( @RequestBody OrderRequest order) throws Exception {
+           
+        return orderRepository.save(order.getOrder());
 
     }
 

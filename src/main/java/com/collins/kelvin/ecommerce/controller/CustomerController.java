@@ -5,6 +5,7 @@
  */
 package com.collins.kelvin.ecommerce.controller;
 
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.model.Customer;
 import com.collins.kelvin.ecommerce.services.CustomerService;
 import java.util.List;
@@ -78,6 +79,13 @@ public class CustomerController {
         Customer customer = customerService.getCustomerById(id);
 
         return customer;
+    }
+
+
+    @GetMapping("/search_customer")
+    public List<Customer> searchCustomer(@RequestBody OneString oneString) {
+
+        return customerService.searchByName(oneString);
     }
 
     @DeleteMapping("/delete_customer/{id}")

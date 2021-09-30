@@ -5,7 +5,8 @@
  */
 package com.collins.kelvin.ecommerce.services;
 
-import com.collins.kelvin.ecommerce.model.Customer;
+import com.collins.kelvin.ecommerce.dto.OneLong;
+import com.collins.kelvin.ecommerce.dto.OrderResponse;
 import com.collins.kelvin.ecommerce.model.Order;
 import com.collins.kelvin.ecommerce.model.Product;
 import com.collins.kelvin.ecommerce.repository.CustomerRepository;
@@ -14,7 +15,6 @@ import com.collins.kelvin.ecommerce.repository.ProductRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,13 +52,34 @@ public class OrderServices {
 
     }
 
-    public List<Order> getAllOrders1() {
+    public List<Order> getAllOrdersSync() {
         LOGGER.info("Request to get a list of all existing orders");
 
         final List<Order> order = orderRepository.findAll();
         return order;
 
     }
+    //Custom made Repository methods
+     public List<OrderResponse> getJoinList() {
+        LOGGER.info("Request to get a list of all existing orders");
+
+         List<OrderResponse> order = orderRepository.getJoinColumns();
+        return order;
+
+    }
+    public List<OrderResponse> getJoinFew() {
+        LOGGER.info("Request to get id column and name");
+
+        List<OrderResponse> order = orderRepository.getFew();
+        return order;
+
+    }
+    public List<Order> getByCustomerId(OneLong oneLong){
+        Long id= oneLong.getNum();
+        return orderRepository.getByCustomerId(id);
+    }
+
+    //end of custom made
 
     public void save(Order order) throws Exception {
         str = LocalDate.now();
@@ -80,11 +101,11 @@ public class OrderServices {
                         p_list += lo + ",";
                         product.setStock(product.getStock() - quantity);
                     } else {
-                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units for " + product.getName() + " " + product.getDescription()
+                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units of " + product.getName() + " " + product.getDescription()
                                 + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
                     }
                 } else {
-                    throw new Exception("One of the Products is missing in the database");
+                    throw new Exception("One of the Products is missing in the database"+lo);
 
                 }
 
@@ -126,7 +147,7 @@ public class OrderServices {
                         p_list += lo + ",";
                         product.setStock(product.getStock() - quantity);
                     } else {
-                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units for " + product.getName() + " " + product.getDescription()
+                        throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units of " + product.getName() + " " + product.getDescription()
                                 + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
                     }
                 } else {

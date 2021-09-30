@@ -5,9 +5,8 @@
  */
 package com.collins.kelvin.ecommerce.services;
 
-import com.collins.kelvin.ecommerce.model.Customer;
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.model.Product;
-import com.collins.kelvin.ecommerce.repository.CustomerRepository;
 import com.collins.kelvin.ecommerce.repository.ProductRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +37,12 @@ public class ProductService {
 
         final List<Product> product = productRepository.findAll();
         return CompletableFuture.completedFuture(product);
+
+    }
+    public List<Product> getByCategory(OneString oneString){
+        LOGGER.info("************************Request to get by Category***************");
+        String category= oneString.getItem();
+      return  productRepository.getByCategory(category);
 
     }
 

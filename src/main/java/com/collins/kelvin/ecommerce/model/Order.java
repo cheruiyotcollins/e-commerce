@@ -47,12 +47,12 @@ public class Order implements Serializable {
     @Column(name = "id")
     private Long id;
 
-//    @OneToMany(targetEntity=Product.class, cascade=CascadeType.ALL )
-//    @JoinColumn(name="cp_fk",referencedColumnName="order_id")
-//    private List<Product> product;
-    
-    @OneToMany(mappedBy="order")
+    @OneToMany(targetEntity=Product.class, cascade=CascadeType.MERGE )
+    @JoinColumn(name="cp_fk",referencedColumnName="order_id")
     private List<Product> product;
+    
+//    @OneToMany(mappedBy="order")
+//    private List<Product> product;
 
     
     public long getOrder_id() {
