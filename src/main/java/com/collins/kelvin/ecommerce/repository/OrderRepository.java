@@ -20,7 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT new com.collins.kelvin.ecommerce.dto.OrderResponse(order_name, order_id) FROM Order")
     public List<OrderResponse> getJoinColumns();
 
-    @Query("SELECT new com.collins.kelvin.ecommerce.dto.OrderResponse(order_name, order_id) FROM Order ")
+    @Query("SELECT  new com.collins.kelvin.ecommerce.dto.OrderResponse(p.order_name, p.order_id) FROM Order p ")
     public List<OrderResponse> getFew();
 
     @Query("SELECT o  FROM Order o where o.id=?1")

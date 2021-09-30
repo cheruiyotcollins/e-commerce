@@ -137,7 +137,7 @@ public class OrderServices {
             p_list = "";
 
             for (int i = 0; i < order.getProduct().size(); i++) {
-                LOGGER.info("************Calculating totalprice for order given");
+                LOGGER.info("************Calculating total price for order given");
                 long lo = order.getProduct().get(i).getProduct_id();
                 if (productRepository.existsById(lo)) {
                     Product product = productRepository.findById(lo).get();
@@ -162,6 +162,7 @@ public class OrderServices {
 //                sum += product.getPrice();
 //            }
             order1.setTotal_price(sum);
+            LOGGER.info("************finally before saving*********");
             orderRepository.save(order1);
         } else {
             throw new Exception("failed, customer id does not exist");
