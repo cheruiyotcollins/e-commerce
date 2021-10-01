@@ -5,7 +5,7 @@
  */
 package com.collins.kelvin.ecommerce.services;
 
-import com.collins.kelvin.ecommerce.BasicConfiguration;
+import com.collins.kelvin.ecommerce.SecurityConfiguration;
 import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.model.Customer;
 import com.collins.kelvin.ecommerce.repository.CustomerRepository;
@@ -31,7 +31,7 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
     int strength = 10; // work factor of bcrypt
-    BasicConfiguration basicConfiguration =new BasicConfiguration();
+    SecurityConfiguration securityConfiguration =new SecurityConfiguration();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final Logger LOGGER= LoggerFactory.getLogger(CustomerService.class);
 
@@ -56,7 +56,7 @@ public class CustomerService {
         LocalDate str = LocalDate.now();
         str.format(formatter);
         customer.setDate(str.toString());
-        String s =basicConfiguration.passwordEncoder().encode(customer.getPassword());
+        String s = securityConfiguration.passwordEncoder().encode(customer.getPassword());
         customer.setPassword(s);
         customerRepository.save(customer);
     }
