@@ -6,6 +6,7 @@
 package com.collins.kelvin.ecommerce.services;
 
 import com.collins.kelvin.ecommerce.dto.OneLong;
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.dto.OrderResponse;
 import com.collins.kelvin.ecommerce.model.Order;
 import com.collins.kelvin.ecommerce.model.Product;
@@ -84,13 +85,13 @@ public class OrderServices {
     public void save(Order order) throws Exception {
         str = LocalDate.now();
         str.format(formatter);
-        order.setDate(str.toString());
+        order.setOrder_date(str.toString());
         if (customerRepository.existsById(order.getId())) {
             sum = 0;
             p_list = "";
 
             for (int i = 0; i < order.getProduct().size(); i++) {
-                LOGGER.info("************Calculating totalprice for order given");
+                LOGGER.info("************Calculating total price for order given");
                 long lo = order.getProduct().get(i).getProduct_id();
                 if (productRepository.existsById(lo)) {
                     Product product = productRepository.findById(lo).get();
@@ -105,7 +106,7 @@ public class OrderServices {
                                 + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
                     }
                 } else {
-                    throw new Exception("One of the Products is missing in the database"+lo);
+                    throw new Exception("One of the Products is missing in oooo database"+lo);
 
                 }
 
@@ -129,7 +130,7 @@ public class OrderServices {
 
         str = LocalDate.now();
         str.format(formatter);
-        order1.setDate(str.toString());
+        order1.setOrder_date(str.toString());
         if (customerRepository.existsById(order.getId())) {
             order1.setOrder_id(id);
 
@@ -148,7 +149,7 @@ public class OrderServices {
                         product.setStock(product.getStock() - quantity);
                     } else {
                         throw new Exception("You want to purchase " + order.getProduct().get(i).getQuantity() + " units of " + product.getName() + " " + product.getDescription()
-                                + " which is Currently less than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
+                                + " which is Currently less ***************************collo than available stock. Available Stock is: " + product.getStock() + ". Please try a lower value");
                     }
                 } else {
                     throw new Exception("One of the Products is missing in the database");
@@ -156,11 +157,7 @@ public class OrderServices {
                 }
 
             }
-            //Calculating using string of product ids
-//            for (int i = 0; i < sArr.length; i++) {
-//                Product product = productRepository.findById(new Long(Integer.valueOf(sArr[i]))).get();
-//                sum += product.getPrice();
-//            }
+
             order1.setTotal_price(sum);
             LOGGER.info("************finally before saving*********");
             orderRepository.save(order1);
@@ -170,7 +167,20 @@ public class OrderServices {
         }
         LOGGER.info("************Saving Order*********");
         orderRepository.save(order1);
+    }//Start
+    public void updateOrderStatus(Long id, OneString oneString) throws Exception {
+        LOGGER.info("************Updating Order status*********");
+        Order orderStatus = orderRepository.findById(id).get();
+
+        str = LocalDate.now();
+        str.format(formatter);
+        orderStatus.setClosing_date(str.toString());
+        orderStatus.setStatus(oneString.getItem());
+
+        LOGGER.info("************Saving Order Status*********");
+        orderRepository.save(orderStatus);
     }
+    //ending
 
     public Order getOrderById(long id) {
         return orderRepository.findById(id).get();

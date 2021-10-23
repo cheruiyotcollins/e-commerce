@@ -6,6 +6,7 @@
 package com.collins.kelvin.ecommerce.controller;
 
 import com.collins.kelvin.ecommerce.dto.OneLong;
+import com.collins.kelvin.ecommerce.dto.OneString;
 import com.collins.kelvin.ecommerce.dto.OrderRequest;
 import com.collins.kelvin.ecommerce.dto.OrderResponse;
 import com.collins.kelvin.ecommerce.model.Order;
@@ -100,6 +101,13 @@ public class OrderController {
         orderService.update(id, order);
         return orderService.getOrderById(id);
     }
+    @PutMapping("/update_order_status/{id}")
+    public Order updateOrderStatus(@PathVariable long id, @RequestBody OneString oneString) throws Exception {
+
+        orderService.updateOrderStatus(id, oneString);
+        return orderService.getOrderById(id);
+    }
+
 
     @GetMapping("/view/{id}")
     public Order viewOrder(@PathVariable long id) {

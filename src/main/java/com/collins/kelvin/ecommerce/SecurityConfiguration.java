@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/customer/view/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/customer/add_customer").hasAnyRole("ADMIN","AGENT")
                 .antMatchers(HttpMethod.PUT, "/customer/**").hasAnyRole("ADMIN","AGENT")
-                .antMatchers(HttpMethod.DELETE, "/customer/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/customer/**").hasRole("ADMIN")
                  //Order
                 .antMatchers(HttpMethod.GET, "/order/**").hasAnyRole("ADMIN","AGENT")
                 .antMatchers(HttpMethod.GET, "/order/view/**").hasRole("USER")
@@ -42,8 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/product/**").hasAnyRole("ADMIN","USER","AGENT")
                 .antMatchers(HttpMethod.POST, "/product/add_product").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/product/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN")
-                .and()
+                .antMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN").and()
                 .csrf().disable()
                 .formLogin().disable();
                 

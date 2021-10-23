@@ -44,10 +44,18 @@ public class Order implements Serializable {
     @Column(name = "total_price")
     private long total_price;
 
-    @Column(name = "date")
-    private String date;
     @Column(name = "product_list")
     private String product_list;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "order_date")
+    private String order_date;
+
+    @Column(name = "closing_date")
+    private String closing_date;
+
 
     @Column(name = "id")
     private Long id;

@@ -73,6 +73,7 @@ public class CustomerController {
     return customerService.getCustomerById(id);
     }
 
+
     @GetMapping("/view/{id}")
     public Customer viewCustomer(@PathVariable long id) {
 
