@@ -1,5 +1,4 @@
-package com.collins.kelvin.ecommerce.dto;
-
+package com.imalipay.payments.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +9,6 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OneLong {
-    private Long  num;
+public class OneLongDto {
+    Long invoiceNo;
 }

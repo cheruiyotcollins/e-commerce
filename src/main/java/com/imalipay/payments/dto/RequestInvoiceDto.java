@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.collins.kelvin.ecommerce.dto;
+package com.imalipay.payments.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class OrderResponse {
-   private static final Logger LOGGER= LoggerFactory.getLogger(OrderResponse.class);
-    private String order_name;
-    private Long order_id;
+public class RequestInvoiceDto {
+   private String msisdn;
+    private String serviceCode;
+    private String amount;
     
 }

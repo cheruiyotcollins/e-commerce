@@ -7,11 +7,11 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.0.BUILD-SNAPSHOT</version>
     </parent>
-    <groupId>com.collins.kelvin</groupId>
+    <groupId>com.imalipay.com</groupId>
     <artifactId>e-commerce</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>e-commerce</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Payments</name>
+    <description></description>
     <properties>
         <java.version>11</java.version>
         <maven.compiler.source>8</maven.compiler.source>
@@ -59,10 +59,6 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -80,6 +76,7 @@
             <version>1.0.0.Final</version>
             <type>jar</type>
         </dependency>
+       
     </dependencies>
 
     <build>

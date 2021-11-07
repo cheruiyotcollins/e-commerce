@@ -1,4 +1,4 @@
-package com.collins.kelvin.ecommerce;
+package com.imalipay.payments;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

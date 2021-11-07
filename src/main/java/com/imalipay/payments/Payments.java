@@ -1,14 +1,14 @@
-package com.collins.kelvin.ecommerce;
+package com.imalipay.payments;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-public class ECommerceApplication {
+public class Payments {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ECommerceApplication.class, args);
+		SpringApplication.run(Payments.class, args);
 	}
 
 }
